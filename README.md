@@ -1,6 +1,6 @@
 # json-server.js
 
 
-<blockquote>
-node server.js
-</blockquote>
+<code>
+$ node server.js
+</code>
