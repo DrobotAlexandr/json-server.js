@@ -6,28 +6,33 @@ const requestHandler = (request, response) => {
 
     let endpoint = getEndpoint(request);
 
-    let endpointResponse = '';
-
     if (endpoint) {
 
-        endpoint = createEndpoint(endpoint);
+        createEndpoint(endpoint);
 
         if (fs.existsSync(endpoint)) {
-            endpointResponse = fs.readFileSync(endpoint).toString();
-        } else {
-            endpointResponse = 'Endpoint no exists!';
+
+            fs.open(endpoint, 'r', () => {
+
+                response.setHeader('Access-Control-Allow-Origin', '*');
+                response.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
+
+                response.end(
+                    fs.readFileSync(endpoint).toString()
+                );
+
+            });
+
         }
 
+
     } else {
-        endpointResponse = 'Json server is ready!';
+
+        response.writeHeader(200, {"Content-Type": "text/html"});
+        response.write('<div style="text-align: center;"><h1>Json server is ready!</h1> <br> <a target="_blank" href="https://github.com/DrobotAlexandr/json-server.js">https://github.com/DrobotAlexandr/json-server.js</a></div>');
+        response.end();
+
     }
-
-    response.setHeader('Access-Control-Allow-Origin', '*');
-    response.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
-
-    response.end(
-        endpointResponse
-    );
 
 
     function createEndpoint(endpoint) {
@@ -55,24 +60,27 @@ const requestHandler = (request, response) => {
                 }
 
                 if (folder.indexOf('.') + 1 === 0) {
+
                     if (!fs.existsSync(endpoint)) {
+
                         fs.mkdir(path, '0777', () => {
                         });
+
                     }
+
                 }
             });
 
         }
 
         if (!fs.existsSync(endpoint) && endpoint.indexOf('favicon.ico') + 1 === 0) {
-            fs.open(endpoint, 'w', () => {
 
-                fs.writeFileSync(endpoint, getJson());
+            fs.openSync(endpoint, 'w');
 
-            });
+            fs.writeFileSync(endpoint, getJson());
+
         }
 
-        return endpoint;
 
     }
 
