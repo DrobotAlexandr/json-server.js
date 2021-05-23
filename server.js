@@ -9,10 +9,20 @@ const requestHandler = (request, response) => {
 
     let endpointResponse = '';
 
-    if (fs.existsSync(createEndpoint(endpoint))) {
-        endpointResponse = fs.readFileSync(endpoint).toString();
+    if (endpoint) {
+
+        createEndpointFolders(endpoint);
+
+        endpoint = createEndpoint(endpoint);
+
+        if (fs.existsSync(endpoint)) {
+            endpointResponse = fs.readFileSync(endpoint).toString();
+        } else {
+            endpointResponse = 'Endpoint no exists!';
+        }
+
     } else {
-        endpointResponse = 'Endpoint no exists!';
+        endpointResponse = 'Json server is ready!';
     }
 
     response.setHeader('Access-Control-Allow-Origin', '*');
@@ -22,13 +32,11 @@ const requestHandler = (request, response) => {
         endpointResponse
     );
 
-    function createEndpoint(endpoint) {
+    function createEndpointFolders(endpoint) {
 
         let arEndpoint = endpoint.split('/');
 
         let path = '';
-
-        let json = getJson();
 
         let i = 0;
         arEndpoint.forEach(folder => {
@@ -41,36 +49,42 @@ const requestHandler = (request, response) => {
             }
 
             if (folder.indexOf('.') + 1 === 0) {
-                if (!fs.existsSync(path)) {
+                if (!fs.existsSync(endpoint)) {
                     fs.mkdir(path, '0777', () => {
                     });
                 }
-            } else {
-                if (!fs.existsSync(path)) {
-                    if (folder !== 'favicon.ico') {
-                        fs.writeFileSync(path, json);
-                    }
-                }
             }
-
         });
+
+    }
+
+    function createEndpoint(endpoint) {
+
+        function getJson() {
+            return '{ "status" : "ok" }';
+        }
+
+        fs.open(endpoint, 'w', () => {
+            fs.writeFileSync(endpoint, getJson());
+        });
+
 
         return endpoint;
 
-        function getJson() {
-
-            return '{ "status" : "ok" }';;
-
-        }
     }
 
     function getEndpoint(request) {
-        return path.dirname(require.main.filename) + '' + request.url;
+
+        if (request.url === '/') {
+            return false;
+        }
+
+        return __dirname + '' + request.url;
     }
 };
 
 const server = http.createServer(requestHandler);
 
-	server.listen(port, (err) => {
+server.listen(port, (err) => {
 
 });
