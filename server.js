@@ -1,5 +1,4 @@
 const http = require('http');
-const path = require('path');
 const fs = require('fs');
 const port = 3000;
 
@@ -10,8 +9,6 @@ const requestHandler = (request, response) => {
     let endpointResponse = '';
 
     if (endpoint) {
-
-        createEndpointFolders(endpoint);
 
         endpoint = createEndpoint(endpoint);
 
@@ -32,42 +29,48 @@ const requestHandler = (request, response) => {
         endpointResponse
     );
 
-    function createEndpointFolders(endpoint) {
-
-        let arEndpoint = endpoint.split('/');
-
-        let path = '';
-
-        let i = 0;
-        arEndpoint.forEach(folder => {
-            i++;
-
-            if (i !== arEndpoint.length) {
-                path += folder + '/';
-            } else {
-                path += folder;
-            }
-
-            if (folder.indexOf('.') + 1 === 0) {
-                if (!fs.existsSync(endpoint)) {
-                    fs.mkdir(path, '0777', () => {
-                    });
-                }
-            }
-        });
-
-    }
 
     function createEndpoint(endpoint) {
+
+        createEndpointFolders(endpoint);
 
         function getJson() {
             return '{ "status" : "ok" }';
         }
 
-        fs.open(endpoint, 'w', () => {
-            fs.writeFileSync(endpoint, getJson());
-        });
+        function createEndpointFolders(endpoint) {
 
+            let arEndpoint = endpoint.split('/');
+
+            let path = '';
+
+            let i = 0;
+            arEndpoint.forEach(folder => {
+                i++;
+
+                if (i !== arEndpoint.length) {
+                    path += folder + '/';
+                } else {
+                    path += folder;
+                }
+
+                if (folder.indexOf('.') + 1 === 0) {
+                    if (!fs.existsSync(endpoint)) {
+                        fs.mkdir(path, '0777', () => {
+                        });
+                    }
+                }
+            });
+
+        }
+
+        if (!fs.existsSync(endpoint) && endpoint.indexOf('favicon.ico') + 1 === 0) {
+            fs.open(endpoint, 'w', () => {
+
+                fs.writeFileSync(endpoint, getJson());
+
+            });
+        }
 
         return endpoint;
 

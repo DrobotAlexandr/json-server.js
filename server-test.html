@@ -1,6 +1,52 @@
 <html>
 <head>
     <title>json-server test</title>
+    <script>
+
+        let testResult = '';
+
+        test(
+            {
+                'url': '/api/MainModule/loadApp'
+            }
+        );
+
+        test(
+            {
+                'url': '/api/MainModule/loadApp'
+            }
+        );
+
+        test(
+            {
+                'url': '/api/MainModule/ping'
+            }
+        );
+
+        test(
+            {
+                'url': '/api/MainPage/getPage'
+            }
+        );
+
+
+        function test(params) {
+
+            let url = 'http://localhost:3000' + params.url + '.json';
+
+            fetch(url).then(
+                () => {
+                    testResult += '<span style="font-size: 18px; color: green;">Test: ' + params.url + ' is successful!<br></span><a target="_blank" style="font-size: 12px; color: #03a9f4;" href="' + url + '">' + url + '</a><br><br>';
+                    document.getElementById('testResult').innerHTML = testResult;
+                }
+            ).catch(() => {
+                testResult += '<span style="color: red;">Test: ' + params.url + ' failed!<br></span>';
+                document.getElementById('testResult').innerHTML = testResult;
+            });
+
+        }
+
+    </script>
     <style>
         div#testResult {
             min-width: 300px;
@@ -14,64 +60,5 @@
 </head>
 <body>
 <div id="testResult"></div>
-<script>
-
-    let testResult = '';
-
-    test(
-        {
-            'url': '/api/MainModule/loadApp'
-        }
-    );
-
-    test(
-        {
-            'url': '/api/MainModule/ping'
-        }
-    );
-
-    test(
-        {
-            'url': '/api/po/ping'
-        }
-    );
-
-    test(
-        {
-            'url': '/api/MainPage/getPage'
-        }
-    );
-
-    test(
-        {
-            'url': '/api/ContactsPage/getPage'
-        }
-    );
-
-    test(
-        {
-            'url': '/api/ContactsPage/sendContactForm'
-        }
-    );
-
-
-
-    function test(params) {
-
-        let url = 'http://localhost:3000' + params.url + '.json';
-
-        fetch(url).then(
-            () => {
-                testResult += '<span style="font-size: 18px; color: green;">Test: ' + params.url + ' is successful!<br></span><a target="_blank" style="font-size: 12px; color: #03a9f4;" href="' + url + '">' + url + '</a><br><br>';
-                document.getElementById('testResult').innerHTML = testResult;
-            }
-        ).catch(() => {
-            testResult += '<span style="color: red;">Test: ' + params.url + ' failed!<br></span>';
-            document.getElementById('testResult').innerHTML = testResult;
-        });
-
-    }
-
-</script>
 </body>
 </html>
