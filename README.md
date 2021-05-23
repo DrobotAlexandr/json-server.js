@@ -22,8 +22,8 @@ $ node server.js
 
 <pre>
 <code>
-http://localhost:3000/api/myModule/myMethod.json
+http://localhost:3000/api/MyModule/myMethod.json
 </code>
 </pre>
 
-<p>В результате запроса будет создан файл /api/myModule/myMethod.json <p/>
+<p>В результате запроса будет создан файл /api/MyModule/myMethod.json <p/>
