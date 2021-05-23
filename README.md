@@ -14,7 +14,7 @@ $ node server.js
 
 <pre>
 <code>
-Запустите в браузере server-test.html
+$ start server-test.html
 </code>
 </pre>
 
