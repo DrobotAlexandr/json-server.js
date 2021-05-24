@@ -16,6 +16,7 @@ const requestHandler = (request, response) => {
 
                 response.setHeader('Access-Control-Allow-Origin', '*');
                 response.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
+                response.setHeader('Content-Type', 'application/json; charset=utf-8');
 
                 response.end(
                     fs.readFileSync(endpoint).toString()
