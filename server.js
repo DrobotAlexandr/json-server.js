@@ -63,8 +63,7 @@ const requestHandler = (request, response) => {
 
                     if (!fs.existsSync(endpoint)) {
 
-                        fs.mkdir(path, '0777', () => {
-                        });
+                        fs.mkdirSync(path, {recursive: true});
 
                     }
 
