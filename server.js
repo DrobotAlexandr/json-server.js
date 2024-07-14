@@ -15,7 +15,7 @@ const requestHandler = (request, response) => {
             fs.open(endpoint, 'r', () => {
 
                 response.setHeader('Access-Control-Allow-Origin', '*');
-                response.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
+                response.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization');
                 response.setHeader('Content-Type', 'application/json; charset=utf-8');
 
                 response.end(
