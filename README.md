@@ -22,8 +22,8 @@ $ start server-test.html
 
 <pre>
 <code>
-http://localhost:3000/api/MyModule/myMethod.json
+http://localhost:3000/api/passport/login
 </code>
 </pre>
 
-<p>В результате запроса будет создан файл /api/MyModule/myMethod.json <p/>
+<p>В результате запроса будет создан файл /api/passport/login.json <p/>
