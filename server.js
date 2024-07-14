@@ -90,7 +90,9 @@ const requestHandler = (request, response) => {
             return false;
         }
 
-        return __dirname + '' + request.url;
+        const url = request.url.replace('.json', '') + '.json';
+
+        return __dirname + '' + url;
     }
 };
 
